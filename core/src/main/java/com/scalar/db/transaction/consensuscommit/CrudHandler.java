@@ -10,11 +10,13 @@ import com.scalar.db.api.Put;
 import com.scalar.db.api.Result;
 import com.scalar.db.api.Scan;
 import com.scalar.db.api.Scanner;
+import com.scalar.db.api.Selection;
 import com.scalar.db.exception.storage.ExecutionException;
+import com.scalar.db.exception.transaction.CrudConflictException;
 import com.scalar.db.exception.transaction.CrudException;
-import com.scalar.db.exception.transaction.UncommittedRecordException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.concurrent.ThreadSafe;
@@ -26,10 +28,18 @@ public class CrudHandler {
   private static final Logger LOGGER = LoggerFactory.getLogger(CrudHandler.class);
   private final DistributedStorage storage;
   private final Snapshot snapshot;
+  private final RecoveryHandler recovery;
+  private final TransactionalTableMetadataManager tableMetadataManager;
 
-  public CrudHandler(DistributedStorage storage, Snapshot snapshot) {
+  public CrudHandler(
+      DistributedStorage storage,
+      Snapshot snapshot,
+      RecoveryHandler recovery,
+      TransactionalTableMetadataManager tableMetadataManager) {
     this.storage = checkNotNull(storage);
     this.snapshot = checkNotNull(snapshot);
+    this.recovery = checkNotNull(recovery);
+    this.tableMetadataManager = checkNotNull(tableMetadataManager);
   }
 
   public Optional<Result> get(Get get) throws CrudException {
@@ -41,16 +51,15 @@ public class CrudHandler {
     }
 
     result = getFromStorage(get);
-    if (!result.isPresent()) {
+    if (!result.isPresent() || result.get().isCommitted()) {
       snapshot.put(key, result);
       return snapshot.get(key).map(r -> r);
     }
 
-    if (result.get().isCommitted()) {
-      snapshot.put(key, result);
-      return snapshot.get(key).map(r -> r);
-    }
-    throw new UncommittedRecordException(result.get(), "this record needs recovery");
+    // lazy recovery
+    result = lazyRecovery(get, result.get());
+    snapshot.put(key, result);
+    return snapshot.get(key).map(r -> r);
   }
 
   public List<Result> scan(Scan scan) throws CrudException {
@@ -68,8 +77,15 @@ public class CrudHandler {
       scanner = getFromStorage(scan);
       for (Result r : scanner) {
         TransactionResult result = new TransactionResult(r);
+
         if (!result.isCommitted()) {
-          throw new UncommittedRecordException(result, "the record needs recovery");
+          // lazy recovery
+          Optional<TransactionResult> recoveredResult = lazyRecovery(scan, result);
+          if (!recoveredResult.isPresent()) {
+            // indicates the record is deleted in another transaction. skip it
+            continue;
+          }
+          result = recoveredResult.get();
         }
 
         Snapshot.Key key = new Snapshot.Key(scan, r);
@@ -105,6 +121,12 @@ public class CrudHandler {
 
   private Optional<TransactionResult> getFromStorage(Get get) throws CrudException {
     try {
+      // only get after image columns
+      get.clearProjections();
+      LinkedHashSet<String> afterImageColumnNames =
+          tableMetadataManager.getTransactionalTableMetadata(get).getAfterImageColumnNames();
+      get.withProjections(afterImageColumnNames);
+
       get.withConsistency(Consistency.LINEARIZABLE);
       return storage.get(get).map(TransactionResult::new);
     } catch (ExecutionException e) {
@@ -114,10 +136,27 @@ public class CrudHandler {
 
   private Scanner getFromStorage(Scan scan) throws CrudException {
     try {
+      // only get after image columns
+      scan.clearProjections();
+      LinkedHashSet<String> afterImageColumnNames =
+          tableMetadataManager.getTransactionalTableMetadata(scan).getAfterImageColumnNames();
+      scan.withProjections(afterImageColumnNames);
+
       scan.withConsistency(Consistency.LINEARIZABLE);
       return storage.scan(scan);
     } catch (ExecutionException e) {
       throw new CrudException("scan failed.", e);
+    }
+  }
+
+  private Optional<TransactionResult> lazyRecovery(Selection selection, TransactionResult result)
+      throws CrudException {
+    try {
+      return recovery.recover(selection, result);
+    } catch (TransactionNotExpiredException e) {
+      throw new CrudConflictException("read a record that the active transaction is updating", e);
+    } catch (RecoveryException e) {
+      throw new CrudException("recovering a record failed", e);
     }
   }
 
