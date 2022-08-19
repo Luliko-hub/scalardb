@@ -1,5 +1,6 @@
 package com.scalar.db.storage.cosmos;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -21,7 +22,7 @@ public class CosmosConfigTest {
     props.setProperty(DatabaseConfig.CONTACT_POINTS, ANY_ENDPOINT);
     props.setProperty(DatabaseConfig.PASSWORD, ANY_KEY);
     props.setProperty(DatabaseConfig.STORAGE, COSMOS_STORAGE);
-    props.setProperty(CosmosConfig.TABLE_METADATA_DATABASE, ANY_TABLE_METADATA_DATABASE);
+    props.setProperty(CosmosConfig.METADATA_DATABASE, ANY_TABLE_METADATA_DATABASE);
 
     // Act
     CosmosConfig config = new CosmosConfig(new DatabaseConfig(props));
@@ -29,8 +30,8 @@ public class CosmosConfigTest {
     // Assert
     assertThat(config.getEndpoint()).isEqualTo(ANY_ENDPOINT);
     assertThat(config.getKey()).isEqualTo(ANY_KEY);
-    assertThat(config.getTableMetadataDatabase()).isPresent();
-    assertThat(config.getTableMetadataDatabase().get()).isEqualTo(ANY_TABLE_METADATA_DATABASE);
+    assertThat(config.getMetadataDatabase()).isPresent();
+    assertThat(config.getMetadataDatabase().get()).isEqualTo(ANY_TABLE_METADATA_DATABASE);
   }
 
   @Test
@@ -60,6 +61,42 @@ public class CosmosConfigTest {
     // Assert
     assertThat(config.getEndpoint()).isEqualTo(ANY_ENDPOINT);
     assertThat(config.getKey()).isEqualTo(ANY_KEY);
-    assertThat(config.getTableMetadataDatabase()).isNotPresent();
+    assertThat(config.getMetadataDatabase()).isNotPresent();
+  }
+
+  @Test
+  public void
+      constructor_WithTableMetadataDatabaseAndMetadataDatabaseGiven_ShouldThrowIllegalArgumentException() {
+    // Arrange
+    Properties props = new Properties();
+    props.setProperty(DatabaseConfig.CONTACT_POINTS, ANY_ENDPOINT);
+    props.setProperty(DatabaseConfig.PASSWORD, ANY_KEY);
+    props.setProperty(DatabaseConfig.STORAGE, COSMOS_STORAGE);
+    props.setProperty(CosmosConfig.METADATA_DATABASE, ANY_TABLE_METADATA_DATABASE);
+    props.setProperty(CosmosConfig.TABLE_METADATA_DATABASE, ANY_TABLE_METADATA_DATABASE);
+
+    // Act Assert
+    assertThatThrownBy(() -> new CosmosConfig(new DatabaseConfig(props)))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  public void
+  constructor_WithTableMetadataDatabaseGiven_ShouldLoadProperly() {
+    // Arrange
+    Properties props = new Properties();
+    props.setProperty(DatabaseConfig.CONTACT_POINTS, ANY_ENDPOINT);
+    props.setProperty(DatabaseConfig.PASSWORD, ANY_KEY);
+    props.setProperty(DatabaseConfig.STORAGE, COSMOS_STORAGE);
+    props.setProperty(CosmosConfig.TABLE_METADATA_DATABASE, ANY_TABLE_METADATA_DATABASE);
+
+    // Act
+    CosmosConfig config = new CosmosConfig(new DatabaseConfig(props));
+
+    // Assert
+    assertThat(config.getEndpoint()).isEqualTo(ANY_ENDPOINT);
+    assertThat(config.getKey()).isEqualTo(ANY_KEY);
+    assertThat(config.getMetadataDatabase()).isPresent();
+    assertThat(config.getMetadataDatabase().get()).isEqualTo(ANY_TABLE_METADATA_DATABASE);
   }
 }
