@@ -40,7 +40,7 @@ public class CosmosConfigTest {
     Properties props = new Properties();
     props.setProperty(DatabaseConfig.CONTACT_POINTS, ANY_ENDPOINT);
     props.setProperty(DatabaseConfig.PASSWORD, ANY_KEY);
-    props.setProperty(CosmosConfig.TABLE_METADATA_DATABASE, ANY_TABLE_METADATA_DATABASE);
+    props.setProperty(CosmosConfig.METADATA_DATABASE, ANY_TABLE_METADATA_DATABASE);
 
     // Act Assert
     assertThatThrownBy(() -> new CosmosConfig(new DatabaseConfig(props)))

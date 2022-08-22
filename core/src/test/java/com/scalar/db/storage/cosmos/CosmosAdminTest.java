@@ -110,7 +110,7 @@ public class CosmosAdminTest {
     when(response.getItem()).thenReturn(cosmosTableMetadata);
 
     if (tableMetadataDatabase.isPresent()) {
-      when(config.getTableMetadataDatabase()).thenReturn(tableMetadataDatabase);
+      when(config.getMetadataDatabase()).thenReturn(tableMetadataDatabase);
       admin = new CosmosAdmin(client, config);
     }
 
@@ -237,7 +237,7 @@ public class CosmosAdminTest {
         .thenReturn(metadataContainer);
 
     if (tableMetadataDatabase.isPresent()) {
-      when(config.getTableMetadataDatabase()).thenReturn(tableMetadataDatabase);
+      when(config.getMetadataDatabase()).thenReturn(tableMetadataDatabase);
       admin = new CosmosAdmin(client, config);
     }
 
@@ -351,7 +351,7 @@ public class CosmosAdminTest {
         .thenReturn(metadataContainer);
 
     if (tableMetadataDatabase.isPresent()) {
-      when(config.getTableMetadataDatabase()).thenReturn(tableMetadataDatabase);
+      when(config.getMetadataDatabase()).thenReturn(tableMetadataDatabase);
       admin = new CosmosAdmin(client, config);
     }
 
@@ -464,7 +464,7 @@ public class CosmosAdminTest {
     when(queryResults.stream()).thenReturn(Stream.empty());
 
     if (tableMetadataDatabase.isPresent()) {
-      when(config.getTableMetadataDatabase()).thenReturn(tableMetadataDatabase);
+      when(config.getMetadataDatabase()).thenReturn(tableMetadataDatabase);
       admin = new CosmosAdmin(client, config);
     }
 
@@ -523,7 +523,7 @@ public class CosmosAdminTest {
     when(queryResults.stream()).thenReturn(Stream.of(new CosmosTableMetadata()));
 
     if (tableMetadataDatabase.isPresent()) {
-      when(config.getTableMetadataDatabase()).thenReturn(tableMetadataDatabase);
+      when(config.getMetadataDatabase()).thenReturn(tableMetadataDatabase);
       admin = new CosmosAdmin(client, config);
     }
 
@@ -630,7 +630,7 @@ public class CosmosAdminTest {
     when(queryResults.stream()).thenReturn(Stream.of(t1, t2));
 
     if (tableMetadataDatabase.isPresent()) {
-      when(config.getTableMetadataDatabase()).thenReturn(tableMetadataDatabase);
+      when(config.getMetadataDatabase()).thenReturn(tableMetadataDatabase);
       admin = new CosmosAdmin(client, config);
     }
 

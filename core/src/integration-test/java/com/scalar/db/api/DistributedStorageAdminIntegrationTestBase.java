@@ -8,6 +8,7 @@ import com.scalar.db.exception.storage.ExecutionException;
 import com.scalar.db.io.DataType;
 import com.scalar.db.io.Key;
 import com.scalar.db.service.StorageFactory;
+import com.scalar.db.util.AdminTestUtils;
 import com.scalar.db.util.TestUtils;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -68,6 +69,7 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
           .build();
   private StorageFactory storageFactory;
   private DistributedStorageAdmin admin;
+  private AdminTestUtils adminTestUtils;
   private String namespace1;
   private String namespace2;
   private String namespace3;
@@ -77,6 +79,7 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
     initialize();
     storageFactory = StorageFactory.create(TestUtils.addSuffix(getProperties(), TEST_NAME));
     admin = storageFactory.getAdmin();
+    adminTestUtils = AdminTestUtils.create(TestUtils.addSuffix(getProperties(), TEST_NAME));
     namespace1 = getNamespace1();
     namespace2 = getNamespace2();
     namespace3 = getNamespace3();
@@ -213,13 +216,14 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
 
       // Assert
       assertThat(admin.namespaceExists(namespace3)).isTrue();
+      assertThat(admin.getNamespaceNames()).contains(namespace3);
     } finally {
       admin.dropNamespace(namespace3, true);
     }
   }
 
   @Test
-  public void createNamespace_ForExistingNamespace_ShouldExecutionException() {
+  public void createNamespace_ForExistingNamespace_ShouldThrowExecutionException() {
     // Arrange
 
     // Act Assert
@@ -236,8 +240,7 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
   }
 
   @Test
-  public void dropNamespace_ForNonExistingNamespace_ShouldDropNamespaceProperly()
-      throws ExecutionException {
+  public void dropNamespace_IfNotExists_ShouldDropNamespaceProperly() throws ExecutionException {
     try {
       // Arrange
       admin.createNamespace(namespace3);
@@ -247,6 +250,7 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
 
       // Assert
       assertThat(admin.namespaceExists(namespace3)).isFalse();
+      assertThat(admin.getNamespaceNames()).doesNotContain(namespace3);
     } finally {
       admin.dropNamespace(namespace3, true);
     }
@@ -596,6 +600,31 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
     } finally {
       admin.dropTable(namespace1, TABLE4, true);
     }
+  }
+
+  @Test
+  public void getNamespaceNames_ShouldReturnCreatedNamespaces() throws ExecutionException {
+    // Arrange
+
+    // Act
+    Set<String> namespaces = admin.getNamespaceNames();
+
+    // Assert
+    assertThat(namespaces).containsOnly(namespace1, namespace2);
+  }
+
+  @Test
+  public void
+      getNamespaceNames_ForBackwardCompatibilityWhenNamespaceTableDoNotExist_ShouldReturnCreatedNamespaces()
+          throws Exception {
+    // Arrange
+    adminTestUtils.dropNamespaceTable();
+
+    // Act
+    Set<String> namespaces = admin.getNamespaceNames();
+
+    // Assert
+    assertThat(namespaces).containsOnly(namespace1, namespace2);
   }
 
   protected boolean isIndexOnBooleanColumnSupported() {

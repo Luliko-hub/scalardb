@@ -36,21 +36,15 @@ public class CosmosAdminTestUtils extends AdminTestUtils {
             .buildClient();
     metadataNamespace =
         new CosmosConfig(new DatabaseConfig(properties))
-            .getTableMetadataDatabase()
+            .getMetadataDatabase()
             .orElse(CosmosAdmin.METADATA_DATABASE);
     metadataTable = CosmosAdmin.METADATA_CONTAINER;
+    namespaceTable = CosmosAdmin.NAMESPACE_CONTAINER;
   }
 
   @Override
   public void dropMetadataTable() {
-    client.getDatabase(metadataNamespace).delete();
-    try {
-      client.getDatabase(metadataNamespace).read();
-    } catch (CosmosException e) {
-      if (e.getStatusCode() != 404) {
-        throw new RuntimeException("Dropping the metadata table failed", e);
-      }
-    }
+    client.getDatabase(metadataNamespace).getContainer(metadataTable).delete();
   }
 
   @Override
@@ -88,5 +82,10 @@ public class CosmosAdminTestUtils extends AdminTestUtils {
         .getContainer(table)
         .getScripts()
         .getStoredProcedure(CosmosAdmin.STORED_PROCEDURE_FILE_NAME);
+  }
+
+  @Override
+  public void dropNamespaceTable() {
+    client.getDatabase(metadataNamespace).getContainer(namespaceTable).delete();
   }
 }

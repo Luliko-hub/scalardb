@@ -34,6 +34,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +55,7 @@ public class CosmosAdmin implements DistributedStorageAdmin {
 
   public static final String METADATA_DATABASE = "scalardb";
   public static final String METADATA_CONTAINER = "metadata";
+  public static final String NAMESPACE_CONTAINER = "namespace";
   private static final String ID = "id";
   private static final String CONCATENATED_PARTITION_KEY = "concatenatedPartitionKey";
   private static final String PARTITION_KEY_PATH = "/" + CONCATENATED_PARTITION_KEY;
@@ -77,12 +79,12 @@ public class CosmosAdmin implements DistributedStorageAdmin {
             .directMode()
             .consistencyLevel(ConsistencyLevel.STRONG)
             .buildClient();
-    metadataDatabase = config.getTableMetadataDatabase().orElse(METADATA_DATABASE);
+    metadataDatabase = config.getMetadataDatabase().orElse(METADATA_DATABASE);
   }
 
   public CosmosAdmin(CosmosClient client, CosmosConfig config) {
     this.client = client;
-    metadataDatabase = config.getTableMetadataDatabase().orElse(METADATA_DATABASE);
+    metadataDatabase = config.getMetadataDatabase().orElse(METADATA_DATABASE);
   }
 
   @Override
@@ -271,6 +273,8 @@ public class CosmosAdmin implements DistributedStorageAdmin {
       throws ExecutionException {
     try {
       client.createDatabase(namespace, calculateThroughput(options));
+      createNamespaceContainerIfNotExists();
+      getNamespaceContainer().createItem(new CosmosNamespace(namespace));
     } catch (RuntimeException e) {
       throw new ExecutionException("creating the database failed", e);
     }
@@ -310,7 +314,6 @@ public class CosmosAdmin implements DistributedStorageAdmin {
           .findFirst()
           .isPresent()) {
         getMetadataContainer().delete();
-        client.getDatabase(metadataDatabase).delete();
       }
     } catch (RuntimeException e) {
       throw new ExecutionException("deleting the table metadata failed", e);
@@ -319,12 +322,28 @@ public class CosmosAdmin implements DistributedStorageAdmin {
 
   @Override
   public void dropNamespace(String namespace) throws ExecutionException {
-    if (!databaseExists(namespace)) {
-      throw new ExecutionException("the database does not exist");
-    }
-
     try {
+      if (!databaseExists(namespace)) {
+        throw new ExecutionException("the database does not exist");
+      }
+
       client.getDatabase(namespace).delete();
+      createNamespaceContainerIfNotExists();
+      CosmosContainer namespaceContainer = getNamespaceContainer();
+      namespaceContainer.deleteItem(new CosmosNamespace(namespace), new CosmosItemRequestOptions());
+
+      // Delete the namespace container and metadata database if there is no more existing
+      // namespaces
+      if (!namespaceContainer
+          .queryItems(
+              "SELECT 1 FROM c OFFSET 0 LIMIT 1", new CosmosQueryRequestOptions(), Object.class)
+          .stream()
+          .findFirst()
+          .isPresent()) {
+        client.getDatabase(metadataDatabase).delete();
+      }
+    } catch (ExecutionException e) {
+      throw e;
     } catch (RuntimeException e) {
       throw new ExecutionException("deleting the database failed", e);
     }
@@ -598,5 +617,69 @@ public class CosmosAdmin implements DistributedStorageAdmin {
           String.format("reading the container %s failed", containerId), e);
     }
     return true;
+  }
+
+  @Override
+  public Set<String> getNamespaceNames() throws ExecutionException {
+    try {
+      createNamespaceContainerIfNotExists();
+
+      CosmosPagedIterable<CosmosNamespace> allNamespaces =
+          getNamespaceContainer()
+              .queryItems(
+                  "SELECT * FROM c", new CosmosQueryRequestOptions(), CosmosNamespace.class);
+
+      return allNamespaces.stream().map(CosmosNamespace::getId).collect(Collectors.toSet());
+    } catch (RuntimeException e) {
+      throw new ExecutionException("retrieving the namespaces names failed", e);
+    }
+  }
+
+  private void createNamespaceContainerIfNotExists() {
+    ThroughputProperties manualThroughput =
+        ThroughputProperties.createManualThroughput(Integer.parseInt(DEFAULT_REQUEST_UNIT));
+    // Create the metadata database if it does not exist
+    client.createDatabaseIfNotExists(metadataDatabase, manualThroughput);
+    CosmosContainerProperties containerProperties =
+        new CosmosContainerProperties(NAMESPACE_CONTAINER, "/id");
+    // Create the namespace container if it does not exist
+    CosmosContainerResponse response =
+        client.getDatabase(metadataDatabase).createContainerIfNotExists(containerProperties);
+    if (response.getStatusCode() == HttpURLConnection.HTTP_CREATED) {
+      // Since the namespace container has been introduced in version 3.7. The namespace container
+      // may not exist even though namespaces and tables exist.
+      // So for backward compatibility reason, we need to import the existing namespaces (deduced
+      // from the existing tables) into the namespace container.
+      importNamespacesNamesOfExistingTables();
+    }
+  }
+
+  private void importNamespacesNamesOfExistingTables() {
+    if (!metadataContainerExists()) {
+      return;
+    }
+    // Retrieve all the existing namespaces
+    Set<String> allNamespacesNames =
+        getMetadataContainer()
+            .queryItems(
+                "SELECT tableMetadata.id FROM container AS tableMetadata", new CosmosQueryRequestOptions(), CosmosTableMetadata.class)
+            .stream()
+            .map(
+                (tableMetadata) -> {
+                  String fullTableName = tableMetadata.getId();
+                  // Extract the namespace name
+                  return fullTableName.substring(0, fullTableName.indexOf('.'));
+                })
+            .collect(Collectors.toSet());
+
+    // Upsert them into the namespace container
+    CosmosContainer namespaceContainer = getNamespaceContainer();
+    for (String namespace : allNamespacesNames) {
+      namespaceContainer.upsertItem(new CosmosNamespace(namespace));
+    }
+  }
+
+  private CosmosContainer getNamespaceContainer() {
+    return client.getDatabase(metadataDatabase).getContainer(NAMESPACE_CONTAINER);
   }
 }

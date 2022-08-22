@@ -8,6 +8,7 @@ public abstract class AdminTestUtils {
 
   String metadataNamespace;
   String metadataTable;
+  String namespaceTable;
 
   AdminTestUtils() {}
 
@@ -47,4 +48,6 @@ public abstract class AdminTestUtils {
    * @throws Exception if an error occurs
    */
   public abstract void corruptMetadata(String namespace, String table) throws Exception;
+
+  public abstract void dropNamespaceTable() throws Exception;
 }

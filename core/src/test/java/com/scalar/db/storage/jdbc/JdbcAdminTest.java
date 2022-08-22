@@ -150,7 +150,7 @@ public class JdbcAdminTest {
     when(dataSource.getConnection()).thenReturn(connection);
 
     if (tableMetadataSchema.isPresent()) {
-      when(config.getTableMetadataSchema()).thenReturn(tableMetadataSchema);
+      when(config.getMetadataSchema()).thenReturn(tableMetadataSchema);
     }
     JdbcAdmin admin = new JdbcAdmin(dataSource, rdbEngine, config);
 
@@ -640,7 +640,7 @@ public class JdbcAdminTest {
     when(dataSource.getConnection()).thenReturn(connection);
 
     if (tableMetadataSchema.isPresent()) {
-      when(config.getTableMetadataSchema()).thenReturn(tableMetadataSchema);
+      when(config.getMetadataSchema()).thenReturn(tableMetadataSchema);
     }
     JdbcAdmin admin = new JdbcAdmin(dataSource, rdbEngine, config);
 
@@ -836,7 +836,7 @@ public class JdbcAdminTest {
     when(dataSource.getConnection()).thenReturn(connection);
 
     if (tableMetadataSchema.isPresent()) {
-      when(config.getTableMetadataSchema()).thenReturn(tableMetadataSchema);
+      when(config.getMetadataSchema()).thenReturn(tableMetadataSchema);
     }
     JdbcAdmin admin = new JdbcAdmin(dataSource, rdbEngine, config);
 
@@ -978,7 +978,7 @@ public class JdbcAdminTest {
     when(dataSource.getConnection()).thenReturn(connection);
 
     if (tableMetadataSchema.isPresent()) {
-      when(config.getTableMetadataSchema()).thenReturn(tableMetadataSchema);
+      when(config.getMetadataSchema()).thenReturn(tableMetadataSchema);
     }
     JdbcAdmin admin = new JdbcAdmin(dataSource, rdbEngine, config);
 
@@ -1127,7 +1127,7 @@ public class JdbcAdminTest {
     when(dataSource.getConnection()).thenReturn(connection);
 
     if (tableMetadataSchema.isPresent()) {
-      when(config.getTableMetadataSchema()).thenReturn(tableMetadataSchema);
+      when(config.getMetadataSchema()).thenReturn(tableMetadataSchema);
     }
     JdbcAdmin admin = new JdbcAdmin(dataSource, rdbEngine, config);
 
