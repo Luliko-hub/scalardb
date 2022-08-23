@@ -1,5 +1,6 @@
 package com.scalar.db.api;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -9,6 +10,7 @@ import com.scalar.db.exception.transaction.TransactionException;
 import com.scalar.db.io.DataType;
 import com.scalar.db.io.Key;
 import com.scalar.db.service.TransactionFactory;
+import com.scalar.db.util.AdminTestUtils;
 import com.scalar.db.util.TestUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -69,6 +71,7 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
           .build();
   private TransactionFactory transactionFactory;
   private DistributedTransactionAdmin admin;
+  private AdminTestUtils adminTestUtils;
   private String namespace1;
   private String namespace2;
   private String namespace3;
@@ -78,6 +81,7 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
     initialize();
     transactionFactory = TransactionFactory.create(TestUtils.addSuffix(gerProperties(), TEST_NAME));
     admin = transactionFactory.getTransactionAdmin();
+    adminTestUtils = AdminTestUtils.create(TestUtils.addSuffix(gerProperties(), TEST_NAME));
     namespace1 = getNamespace1();
     namespace2 = getNamespace2();
     namespace3 = getNamespace3();
@@ -216,6 +220,7 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
 
       // Assert
       assertThat(admin.namespaceExists(namespace3)).isTrue();
+      assertThat(admin.getNamespaceNames()).containsOnly(namespace1, namespace2, namespace3);
     } finally {
       admin.dropNamespace(namespace3, true);
     }
@@ -250,6 +255,7 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
 
       // Assert
       assertThat(admin.namespaceExists(namespace3)).isFalse();
+      assertThat(admin.getNamespaceNames()).containsOnly(namespace1, namespace2);
     } finally {
       admin.dropNamespace(namespace3, true);
     }
@@ -608,6 +614,68 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
       assertThat(admin.getTableMetadata(namespace1, TABLE4)).isEqualTo(expectedTableMetadata);
     } finally {
       admin.dropTable(namespace1, TABLE4, true);
+    }
+  }
+
+  @Test
+  public void getNamespaceNames_ShouldReturnCreatedNamespaces() throws ExecutionException {
+    // Arrange
+
+    // Act
+    Set<String> namespaces = admin.getNamespaceNames();
+
+    // Assert
+    assertThat(namespaces).containsOnly(namespace1, namespace2);
+  }
+
+  @Test
+  public void
+  getNamespaceNames_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
+      throws Exception {
+    // Arrange
+    adminTestUtils.dropNamespaceTable();
+
+    // Act
+    Set<String> namespaces = admin.getNamespaceNames();
+
+    // Assert
+    assertThat(namespaces).containsOnly(namespace1, namespace2);
+  }
+
+  @Test
+  public void
+  createNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
+      throws Exception {
+    try {
+      // Arrange
+      adminTestUtils.dropNamespaceTable();
+
+      // Act
+      admin.createNamespace(namespace3);
+
+      // Assert
+      assertThat(admin.namespaceExists(namespace3)).isTrue();
+    } finally {
+      admin.dropNamespace(namespace3, true);
+    }
+  }
+
+  @Test
+  public void
+  dropNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
+      throws Exception {
+    try {
+      // Arrange
+      admin.createNamespace(namespace3);
+      adminTestUtils.dropNamespaceTable();
+
+      // Act
+      admin.dropNamespace(namespace3);
+
+      // Assert
+      assertThat(admin.namespaceExists(namespace3)).isFalse();
+    } finally {
+      admin.dropNamespace(namespace3, true);
     }
   }
 

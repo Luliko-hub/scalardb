@@ -381,7 +381,5 @@ public interface Admin {
    * @return a set of namespaces names, an empty set if no namespaces exist
    * @throws ExecutionException if the operation failed
    */
-  default Set<String> getNamespaceNames() throws ExecutionException {
-    throw new UnsupportedOperationException();
-  }
+   Set<String> getNamespaceNames() throws ExecutionException ;
 }

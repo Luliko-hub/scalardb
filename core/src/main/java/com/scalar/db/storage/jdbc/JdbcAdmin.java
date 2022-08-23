@@ -1121,8 +1121,8 @@ public class JdbcAdmin implements DistributedStorageAdmin {
       while (rs.next()) {
         String fullTableName = rs.getString(METADATA_COL_FULL_TABLE_NAME);
         String namespaceName = fullTableName.substring(0, fullTableName.indexOf('.'));
-        if (insertedNamespaces.add(namespaceName)){
-          // Insert only if the namespace was not already inserted.
+        if (!insertedNamespaces.contains(namespaceName)){
+          insertedNamespaces.add(namespaceName);
           insertIntoNamespaceTable(connection, namespaceName);
         }
       }

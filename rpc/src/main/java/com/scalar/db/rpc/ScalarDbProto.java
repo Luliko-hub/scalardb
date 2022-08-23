@@ -210,6 +210,16 @@ public final class ScalarDbProto {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_rpc_AddNewColumnToTableRequest_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpc_GetNamespaceNamesRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpc_GetNamespaceNamesRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_rpc_GetNamespaceNamesResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_rpc_GetNamespaceNamesResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_rpc_TransactionRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -543,197 +553,203 @@ public final class ScalarDbProto {
       "alue\030\002 \001(\t:\0028\001\"w\n\032AddNewColumnToTableReq" +
       "uest\022\021\n\tnamespace\030\001 \001(\t\022\r\n\005table\030\002 \001(\t\022\023" +
       "\n\013column_name\030\003 \001(\t\022\"\n\013column_type\030\004 \001(\016" +
-      "2\r.rpc.DataType\"\317\006\n\022TransactionRequest\022=" +
-      "\n\rstart_request\030\001 \001(\0132$.rpc.TransactionR" +
-      "equest.StartRequestH\000\0229\n\013get_request\030\002 \001" +
-      "(\0132\".rpc.TransactionRequest.GetRequestH\000" +
-      "\022;\n\014scan_request\030\003 \001(\0132#.rpc.Transaction" +
-      "Request.ScanRequestH\000\022?\n\016mutate_request\030" +
-      "\004 \001(\0132%.rpc.TransactionRequest.MutateReq" +
-      "uestH\000\022?\n\016commit_request\030\005 \001(\0132%.rpc.Tra" +
-      "nsactionRequest.CommitRequestH\000\022=\n\rabort" +
-      "_request\030\006 \001(\0132$.rpc.TransactionRequest." +
-      "AbortRequestH\000\022=\n\rbegin_request\030\007 \001(\0132$." +
-      "rpc.TransactionRequest.BeginRequestH\000\022C\n" +
-      "\020rollback_request\030\010 \001(\0132\'.rpc.Transactio" +
-      "nRequest.RollbackRequestH\000\032>\n\014BeginReque" +
-      "st\022\033\n\016transaction_id\030\001 \001(\tH\000\210\001\001B\021\n\017_tran" +
-      "saction_id\032>\n\014StartRequest\022\033\n\016transactio" +
-      "n_id\030\001 \001(\tH\000\210\001\001B\021\n\017_transaction_id\032#\n\nGe" +
-      "tRequest\022\025\n\003get\030\002 \001(\0132\010.rpc.Get\032&\n\013ScanR" +
-      "equest\022\027\n\004scan\030\002 \001(\0132\t.rpc.Scan\0321\n\rMutat" +
-      "eRequest\022 \n\tmutations\030\002 \003(\0132\r.rpc.Mutati" +
-      "on\032\017\n\rCommitRequest\032\021\n\017RollbackRequest\032\016" +
-      "\n\014AbortRequestB\t\n\007request\"\301\005\n\023Transactio" +
-      "nResponse\022@\n\016start_response\030\001 \001(\0132&.rpc." +
-      "TransactionResponse.StartResponseH\000\022<\n\014g" +
-      "et_response\030\002 \001(\0132$.rpc.TransactionRespo" +
-      "nse.GetResponseH\000\022>\n\rscan_response\030\003 \001(\013" +
-      "2%.rpc.TransactionResponse.ScanResponseH" +
-      "\000\022/\n\005error\030\004 \001(\0132\036.rpc.TransactionRespon" +
-      "se.ErrorH\000\022@\n\016begin_response\030\005 \001(\0132&.rpc" +
-      ".TransactionResponse.BeginResponseH\000\032\'\n\r" +
-      "BeginResponse\022\026\n\016transaction_id\030\001 \001(\t\032\'\n" +
-      "\rStartResponse\022\026\n\016transaction_id\030\001 \001(\t\032*" +
-      "\n\013GetResponse\022\033\n\006result\030\001 \001(\0132\013.rpc.Resu" +
-      "lt\032,\n\014ScanResponse\022\034\n\007results\030\001 \003(\0132\013.rp" +
-      "c.Result\032\276\001\n\005Error\022<\n\nerror_code\030\001 \001(\0162(" +
-      ".rpc.TransactionResponse.Error.ErrorCode" +
-      "\022\017\n\007message\030\002 \001(\t\"f\n\tErrorCode\022\024\n\020INVALI" +
-      "D_ARGUMENT\020\000\022\030\n\024TRANSACTION_CONFLICT\020\001\022\036" +
-      "\n\032UNKNOWN_TRANSACTION_STATUS\020\002\022\t\n\005OTHER\020" +
-      "\003B\n\n\010response\"4\n\032GetTransactionStateRequ" +
-      "est\022\026\n\016transaction_id\030\001 \001(\t\"C\n\033GetTransa" +
-      "ctionStateResponse\022$\n\005state\030\001 \001(\0162\025.rpc." +
-      "TransactionState\")\n\017RollbackRequest\022\026\n\016t" +
-      "ransaction_id\030\001 \001(\t\"8\n\020RollbackResponse\022" +
-      "$\n\005state\030\001 \001(\0162\025.rpc.TransactionState\"&\n" +
-      "\014AbortRequest\022\026\n\016transaction_id\030\001 \001(\t\"5\n" +
-      "\rAbortResponse\022$\n\005state\030\001 \001(\0162\025.rpc.Tran" +
-      "sactionState\"\236\010\n TwoPhaseCommitTransacti" +
-      "onRequest\022K\n\rstart_request\030\001 \001(\01322.rpc.T" +
-      "woPhaseCommitTransactionRequest.StartReq" +
-      "uestH\000\022I\n\014join_request\030\002 \001(\01321.rpc.TwoPh" +
-      "aseCommitTransactionRequest.JoinRequestH" +
-      "\000\022G\n\013get_request\030\003 \001(\01320.rpc.TwoPhaseCom" +
-      "mitTransactionRequest.GetRequestH\000\022I\n\014sc" +
-      "an_request\030\004 \001(\01321.rpc.TwoPhaseCommitTra" +
-      "nsactionRequest.ScanRequestH\000\022M\n\016mutate_" +
-      "request\030\005 \001(\01323.rpc.TwoPhaseCommitTransa" +
-      "ctionRequest.MutateRequestH\000\022O\n\017prepare_" +
-      "request\030\006 \001(\01324.rpc.TwoPhaseCommitTransa" +
-      "ctionRequest.PrepareRequestH\000\022Q\n\020validat" +
-      "e_request\030\007 \001(\01325.rpc.TwoPhaseCommitTran" +
-      "sactionRequest.ValidateRequestH\000\022M\n\016comm" +
-      "it_request\030\010 \001(\01323.rpc.TwoPhaseCommitTra" +
-      "nsactionRequest.CommitRequestH\000\022Q\n\020rollb" +
-      "ack_request\030\t \001(\01325.rpc.TwoPhaseCommitTr" +
-      "ansactionRequest.RollbackRequestH\000\032>\n\014St" +
-      "artRequest\022\033\n\016transaction_id\030\001 \001(\tH\000\210\001\001B" +
-      "\021\n\017_transaction_id\032%\n\013JoinRequest\022\026\n\016tra" +
-      "nsaction_id\030\001 \001(\t\032#\n\nGetRequest\022\025\n\003get\030\002" +
-      " \001(\0132\010.rpc.Get\032&\n\013ScanRequest\022\027\n\004scan\030\002 " +
-      "\001(\0132\t.rpc.Scan\0321\n\rMutateRequest\022 \n\tmutat" +
-      "ions\030\002 \003(\0132\r.rpc.Mutation\032\020\n\016PrepareRequ" +
-      "est\032\021\n\017ValidateRequest\032\017\n\rCommitRequest\032" +
-      "\021\n\017RollbackRequestB\t\n\007request\"\252\005\n!TwoPha" +
-      "seCommitTransactionResponse\022N\n\016start_res" +
-      "ponse\030\001 \001(\01324.rpc.TwoPhaseCommitTransact" +
-      "ionResponse.StartResponseH\000\022J\n\014get_respo" +
-      "nse\030\002 \001(\01322.rpc.TwoPhaseCommitTransactio" +
-      "nResponse.GetResponseH\000\022L\n\rscan_response" +
-      "\030\003 \001(\01323.rpc.TwoPhaseCommitTransactionRe" +
-      "sponse.ScanResponseH\000\022=\n\005error\030\004 \001(\0132,.r" +
-      "pc.TwoPhaseCommitTransactionResponse.Err" +
-      "orH\000\032\'\n\rStartResponse\022\026\n\016transaction_id\030" +
-      "\001 \001(\t\032*\n\013GetResponse\022\033\n\006result\030\001 \001(\0132\013.r" +
-      "pc.Result\032,\n\014ScanResponse\022\034\n\007results\030\001 \003" +
-      "(\0132\013.rpc.Result\032\314\001\n\005Error\022J\n\nerror_code\030" +
-      "\001 \001(\01626.rpc.TwoPhaseCommitTransactionRes" +
-      "ponse.Error.ErrorCode\022\017\n\007message\030\002 \001(\t\"f" +
-      "\n\tErrorCode\022\024\n\020INVALID_ARGUMENT\020\000\022\030\n\024TRA" +
-      "NSACTION_CONFLICT\020\001\022\036\n\032UNKNOWN_TRANSACTI" +
-      "ON_STATUS\020\002\022\t\n\005OTHER\020\003B\n\n\010response\"\251\001\n\036C" +
-      "reateCoordinatorTablesRequest\022A\n\007options" +
-      "\030\001 \003(\01320.rpc.CreateCoordinatorTablesRequ" +
-      "est.OptionsEntry\022\024\n\014if_not_exist\030\002 \001(\010\032." +
+      "2\r.rpc.DataType\"\032\n\030GetNamespaceNamesRequ" +
+      "est\"4\n\031GetNamespaceNamesResponse\022\027\n\017name" +
+      "space_names\030\001 \003(\t\"\317\006\n\022TransactionRequest" +
+      "\022=\n\rstart_request\030\001 \001(\0132$.rpc.Transactio" +
+      "nRequest.StartRequestH\000\0229\n\013get_request\030\002" +
+      " \001(\0132\".rpc.TransactionRequest.GetRequest" +
+      "H\000\022;\n\014scan_request\030\003 \001(\0132#.rpc.Transacti" +
+      "onRequest.ScanRequestH\000\022?\n\016mutate_reques" +
+      "t\030\004 \001(\0132%.rpc.TransactionRequest.MutateR" +
+      "equestH\000\022?\n\016commit_request\030\005 \001(\0132%.rpc.T" +
+      "ransactionRequest.CommitRequestH\000\022=\n\rabo" +
+      "rt_request\030\006 \001(\0132$.rpc.TransactionReques" +
+      "t.AbortRequestH\000\022=\n\rbegin_request\030\007 \001(\0132" +
+      "$.rpc.TransactionRequest.BeginRequestH\000\022" +
+      "C\n\020rollback_request\030\010 \001(\0132\'.rpc.Transact" +
+      "ionRequest.RollbackRequestH\000\032>\n\014BeginReq" +
+      "uest\022\033\n\016transaction_id\030\001 \001(\tH\000\210\001\001B\021\n\017_tr" +
+      "ansaction_id\032>\n\014StartRequest\022\033\n\016transact" +
+      "ion_id\030\001 \001(\tH\000\210\001\001B\021\n\017_transaction_id\032#\n\n" +
+      "GetRequest\022\025\n\003get\030\002 \001(\0132\010.rpc.Get\032&\n\013Sca" +
+      "nRequest\022\027\n\004scan\030\002 \001(\0132\t.rpc.Scan\0321\n\rMut" +
+      "ateRequest\022 \n\tmutations\030\002 \003(\0132\r.rpc.Muta" +
+      "tion\032\017\n\rCommitRequest\032\021\n\017RollbackRequest" +
+      "\032\016\n\014AbortRequestB\t\n\007request\"\301\005\n\023Transact" +
+      "ionResponse\022@\n\016start_response\030\001 \001(\0132&.rp" +
+      "c.TransactionResponse.StartResponseH\000\022<\n" +
+      "\014get_response\030\002 \001(\0132$.rpc.TransactionRes" +
+      "ponse.GetResponseH\000\022>\n\rscan_response\030\003 \001" +
+      "(\0132%.rpc.TransactionResponse.ScanRespons" +
+      "eH\000\022/\n\005error\030\004 \001(\0132\036.rpc.TransactionResp" +
+      "onse.ErrorH\000\022@\n\016begin_response\030\005 \001(\0132&.r" +
+      "pc.TransactionResponse.BeginResponseH\000\032\'" +
+      "\n\rBeginResponse\022\026\n\016transaction_id\030\001 \001(\t\032" +
+      "\'\n\rStartResponse\022\026\n\016transaction_id\030\001 \001(\t" +
+      "\032*\n\013GetResponse\022\033\n\006result\030\001 \001(\0132\013.rpc.Re" +
+      "sult\032,\n\014ScanResponse\022\034\n\007results\030\001 \003(\0132\013." +
+      "rpc.Result\032\276\001\n\005Error\022<\n\nerror_code\030\001 \001(\016" +
+      "2(.rpc.TransactionResponse.Error.ErrorCo" +
+      "de\022\017\n\007message\030\002 \001(\t\"f\n\tErrorCode\022\024\n\020INVA" +
+      "LID_ARGUMENT\020\000\022\030\n\024TRANSACTION_CONFLICT\020\001" +
+      "\022\036\n\032UNKNOWN_TRANSACTION_STATUS\020\002\022\t\n\005OTHE" +
+      "R\020\003B\n\n\010response\"4\n\032GetTransactionStateRe" +
+      "quest\022\026\n\016transaction_id\030\001 \001(\t\"C\n\033GetTran" +
+      "sactionStateResponse\022$\n\005state\030\001 \001(\0162\025.rp" +
+      "c.TransactionState\")\n\017RollbackRequest\022\026\n" +
+      "\016transaction_id\030\001 \001(\t\"8\n\020RollbackRespons" +
+      "e\022$\n\005state\030\001 \001(\0162\025.rpc.TransactionState\"" +
+      "&\n\014AbortRequest\022\026\n\016transaction_id\030\001 \001(\t\"" +
+      "5\n\rAbortResponse\022$\n\005state\030\001 \001(\0162\025.rpc.Tr" +
+      "ansactionState\"\236\010\n TwoPhaseCommitTransac" +
+      "tionRequest\022K\n\rstart_request\030\001 \001(\01322.rpc" +
+      ".TwoPhaseCommitTransactionRequest.StartR" +
+      "equestH\000\022I\n\014join_request\030\002 \001(\01321.rpc.Two" +
+      "PhaseCommitTransactionRequest.JoinReques" +
+      "tH\000\022G\n\013get_request\030\003 \001(\01320.rpc.TwoPhaseC" +
+      "ommitTransactionRequest.GetRequestH\000\022I\n\014" +
+      "scan_request\030\004 \001(\01321.rpc.TwoPhaseCommitT" +
+      "ransactionRequest.ScanRequestH\000\022M\n\016mutat" +
+      "e_request\030\005 \001(\01323.rpc.TwoPhaseCommitTran" +
+      "sactionRequest.MutateRequestH\000\022O\n\017prepar" +
+      "e_request\030\006 \001(\01324.rpc.TwoPhaseCommitTran" +
+      "sactionRequest.PrepareRequestH\000\022Q\n\020valid" +
+      "ate_request\030\007 \001(\01325.rpc.TwoPhaseCommitTr" +
+      "ansactionRequest.ValidateRequestH\000\022M\n\016co" +
+      "mmit_request\030\010 \001(\01323.rpc.TwoPhaseCommitT" +
+      "ransactionRequest.CommitRequestH\000\022Q\n\020rol" +
+      "lback_request\030\t \001(\01325.rpc.TwoPhaseCommit" +
+      "TransactionRequest.RollbackRequestH\000\032>\n\014" +
+      "StartRequest\022\033\n\016transaction_id\030\001 \001(\tH\000\210\001" +
+      "\001B\021\n\017_transaction_id\032%\n\013JoinRequest\022\026\n\016t" +
+      "ransaction_id\030\001 \001(\t\032#\n\nGetRequest\022\025\n\003get" +
+      "\030\002 \001(\0132\010.rpc.Get\032&\n\013ScanRequest\022\027\n\004scan\030" +
+      "\002 \001(\0132\t.rpc.Scan\0321\n\rMutateRequest\022 \n\tmut" +
+      "ations\030\002 \003(\0132\r.rpc.Mutation\032\020\n\016PrepareRe" +
+      "quest\032\021\n\017ValidateRequest\032\017\n\rCommitReques" +
+      "t\032\021\n\017RollbackRequestB\t\n\007request\"\252\005\n!TwoP" +
+      "haseCommitTransactionResponse\022N\n\016start_r" +
+      "esponse\030\001 \001(\01324.rpc.TwoPhaseCommitTransa" +
+      "ctionResponse.StartResponseH\000\022J\n\014get_res" +
+      "ponse\030\002 \001(\01322.rpc.TwoPhaseCommitTransact" +
+      "ionResponse.GetResponseH\000\022L\n\rscan_respon" +
+      "se\030\003 \001(\01323.rpc.TwoPhaseCommitTransaction" +
+      "Response.ScanResponseH\000\022=\n\005error\030\004 \001(\0132," +
+      ".rpc.TwoPhaseCommitTransactionResponse.E" +
+      "rrorH\000\032\'\n\rStartResponse\022\026\n\016transaction_i" +
+      "d\030\001 \001(\t\032*\n\013GetResponse\022\033\n\006result\030\001 \001(\0132\013" +
+      ".rpc.Result\032,\n\014ScanResponse\022\034\n\007results\030\001" +
+      " \003(\0132\013.rpc.Result\032\314\001\n\005Error\022J\n\nerror_cod" +
+      "e\030\001 \001(\01626.rpc.TwoPhaseCommitTransactionR" +
+      "esponse.Error.ErrorCode\022\017\n\007message\030\002 \001(\t" +
+      "\"f\n\tErrorCode\022\024\n\020INVALID_ARGUMENT\020\000\022\030\n\024T" +
+      "RANSACTION_CONFLICT\020\001\022\036\n\032UNKNOWN_TRANSAC" +
+      "TION_STATUS\020\002\022\t\n\005OTHER\020\003B\n\n\010response\"\251\001\n" +
+      "\036CreateCoordinatorTablesRequest\022A\n\007optio" +
+      "ns\030\001 \003(\01320.rpc.CreateCoordinatorTablesRe" +
+      "quest.OptionsEntry\022\024\n\014if_not_exist\030\002 \001(\010" +
+      "\032.\n\014OptionsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002" +
+      " \001(\t:\0028\001\"0\n\034DropCoordinatorTablesRequest" +
+      "\022\020\n\010if_exist\030\001 \001(\010\"\"\n TruncateCoordinato" +
+      "rTablesRequest\"\037\n\035CoordinatorTablesExist" +
+      "Request\"/\n\036CoordinatorTablesExistRespons" +
+      "e\022\r\n\005exist\030\001 \001(\010\"\223\001\n\036RepairCoordinatorTa" +
+      "blesRequest\022A\n\007options\030\001 \003(\01320.rpc.Repai" +
+      "rCoordinatorTablesRequest.OptionsEntry\032." +
       "\n\014OptionsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001" +
-      "(\t:\0028\001\"0\n\034DropCoordinatorTablesRequest\022\020" +
-      "\n\010if_exist\030\001 \001(\010\"\"\n TruncateCoordinatorT" +
-      "ablesRequest\"\037\n\035CoordinatorTablesExistRe" +
-      "quest\"/\n\036CoordinatorTablesExistResponse\022" +
-      "\r\n\005exist\030\001 \001(\010\"\223\001\n\036RepairCoordinatorTabl" +
-      "esRequest\022A\n\007options\030\001 \003(\01320.rpc.RepairC" +
-      "oordinatorTablesRequest.OptionsEntry\032.\n\014" +
-      "OptionsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t" +
-      ":\0028\001*a\n\013Consistency\022\032\n\026CONSISTENCY_SEQUE" +
-      "NTIAL\020\000\022\030\n\024CONSISTENCY_EVENTUAL\020\001\022\034\n\030CON" +
-      "SISTENCY_LINEARIZABLE\020\002*&\n\005Order\022\r\n\tORDE" +
-      "R_ASC\020\000\022\016\n\nORDER_DESC\020\001*\235\001\n\010DataType\022\025\n\021" +
-      "DATA_TYPE_BOOLEAN\020\000\022\021\n\rDATA_TYPE_INT\020\001\022\024" +
-      "\n\020DATA_TYPE_BIGINT\020\002\022\023\n\017DATA_TYPE_FLOAT\020" +
-      "\003\022\024\n\020DATA_TYPE_DOUBLE\020\004\022\022\n\016DATA_TYPE_TEX" +
-      "T\020\005\022\022\n\016DATA_TYPE_BLOB\020\006*q\n\020TransactionSt" +
-      "ate\022\037\n\033TRANSACTION_STATE_COMMITTED\020\000\022\035\n\031" +
-      "TRANSACTION_STATE_ABORTED\020\001\022\035\n\031TRANSACTI" +
-      "ON_STATE_UNKNOWN\020\0022\253\001\n\022DistributedStorag" +
-      "e\022*\n\003Get\022\017.rpc.GetRequest\032\020.rpc.GetRespo" +
-      "nse\"\000\0221\n\004Scan\022\020.rpc.ScanRequest\032\021.rpc.Sc" +
-      "anResponse\"\000(\0010\001\0226\n\006Mutate\022\022.rpc.MutateR" +
-      "equest\032\026.google.protobuf.Empty\"\0002\213\007\n\027Dis" +
-      "tributedStorageAdmin\022H\n\017CreateNamespace\022" +
-      "\033.rpc.CreateNamespaceRequest\032\026.google.pr" +
-      "otobuf.Empty\"\000\022D\n\rDropNamespace\022\031.rpc.Dr" +
-      "opNamespaceRequest\032\026.google.protobuf.Emp" +
-      "ty\"\000\022@\n\013CreateTable\022\027.rpc.CreateTableReq" +
-      "uest\032\026.google.protobuf.Empty\"\000\022<\n\tDropTa" +
-      "ble\022\025.rpc.DropTableRequest\032\026.google.prot" +
-      "obuf.Empty\"\000\022D\n\rTruncateTable\022\031.rpc.Trun" +
-      "cateTableRequest\032\026.google.protobuf.Empty" +
-      "\"\000\022@\n\013CreateIndex\022\027.rpc.CreateIndexReque" +
-      "st\032\026.google.protobuf.Empty\"\000\022<\n\tDropInde" +
-      "x\022\025.rpc.DropIndexRequest\032\026.google.protob" +
-      "uf.Empty\"\000\022Q\n\020GetTableMetadata\022\034.rpc.Get" +
-      "TableMetadataRequest\032\035.rpc.GetTableMetad" +
-      "ataResponse\"\000\022c\n\026GetNamespaceTableNames\022" +
-      "\".rpc.GetNamespaceTableNamesRequest\032#.rp" +
-      "c.GetNamespaceTableNamesResponse\"\000\022N\n\017Na" +
-      "mespaceExists\022\033.rpc.NamespaceExistsReque" +
-      "st\032\034.rpc.NamespaceExistsResponse\"\000\022@\n\013Re" +
-      "pairTable\022\027.rpc.RepairTableRequest\032\026.goo" +
-      "gle.protobuf.Empty\"\000\022P\n\023AddNewColumnToTa" +
-      "ble\022\037.rpc.AddNewColumnToTableRequest\032\026.g" +
-      "oogle.protobuf.Empty\"\0002\236\002\n\026DistributedTr" +
-      "ansaction\022F\n\013Transaction\022\027.rpc.Transacti" +
-      "onRequest\032\030.rpc.TransactionResponse\"\000(\0010" +
-      "\001\022O\n\010GetState\022\037.rpc.GetTransactionStateR" +
-      "equest\032 .rpc.GetTransactionStateResponse" +
-      "\"\000\0229\n\010Rollback\022\024.rpc.RollbackRequest\032\025.r" +
-      "pc.RollbackResponse\"\000\0220\n\005Abort\022\021.rpc.Abo" +
-      "rtRequest\032\022.rpc.AbortResponse\"\0002\220\002\n\031TwoP" +
-      "haseCommitTransaction\022p\n\031TwoPhaseCommitT" +
-      "ransaction\022%.rpc.TwoPhaseCommitTransacti" +
-      "onRequest\032&.rpc.TwoPhaseCommitTransactio" +
-      "nResponse\"\000(\0010\001\022O\n\010GetState\022\037.rpc.GetTra" +
-      "nsactionStateRequest\032 .rpc.GetTransactio" +
-      "nStateResponse\"\000\0220\n\005Abort\022\021.rpc.AbortReq" +
-      "uest\032\022.rpc.AbortResponse\"\0002\334\n\n\033Distribut" +
-      "edTransactionAdmin\022H\n\017CreateNamespace\022\033." +
-      "rpc.CreateNamespaceRequest\032\026.google.prot" +
-      "obuf.Empty\"\000\022D\n\rDropNamespace\022\031.rpc.Drop" +
-      "NamespaceRequest\032\026.google.protobuf.Empty" +
-      "\"\000\022@\n\013CreateTable\022\027.rpc.CreateTableReque" +
-      "st\032\026.google.protobuf.Empty\"\000\022<\n\tDropTabl" +
-      "e\022\025.rpc.DropTableRequest\032\026.google.protob" +
-      "uf.Empty\"\000\022D\n\rTruncateTable\022\031.rpc.Trunca" +
-      "teTableRequest\032\026.google.protobuf.Empty\"\000" +
-      "\022@\n\013CreateIndex\022\027.rpc.CreateIndexRequest" +
-      "\032\026.google.protobuf.Empty\"\000\022<\n\tDropIndex\022" +
-      "\025.rpc.DropIndexRequest\032\026.google.protobuf" +
-      ".Empty\"\000\022Q\n\020GetTableMetadata\022\034.rpc.GetTa" +
-      "bleMetadataRequest\032\035.rpc.GetTableMetadat" +
-      "aResponse\"\000\022c\n\026GetNamespaceTableNames\022\"." +
-      "rpc.GetNamespaceTableNamesRequest\032#.rpc." +
-      "GetNamespaceTableNamesResponse\"\000\022N\n\017Name" +
-      "spaceExists\022\033.rpc.NamespaceExistsRequest" +
-      "\032\034.rpc.NamespaceExistsResponse\"\000\022X\n\027Crea" +
-      "teCoordinatorTables\022#.rpc.CreateCoordina" +
-      "torTablesRequest\032\026.google.protobuf.Empty" +
-      "\"\000\022T\n\025DropCoordinatorTables\022!.rpc.DropCo" +
-      "ordinatorTablesRequest\032\026.google.protobuf" +
-      ".Empty\"\000\022\\\n\031TruncateCoordinatorTables\022%." +
-      "rpc.TruncateCoordinatorTablesRequest\032\026.g" +
-      "oogle.protobuf.Empty\"\000\022c\n\026CoordinatorTab" +
-      "lesExist\022\".rpc.CoordinatorTablesExistReq" +
-      "uest\032#.rpc.CoordinatorTablesExistRespons" +
-      "e\"\000\022@\n\013RepairTable\022\027.rpc.RepairTableRequ" +
-      "est\032\026.google.protobuf.Empty\"\000\022X\n\027RepairC" +
-      "oordinatorTables\022#.rpc.RepairCoordinator" +
-      "TablesRequest\032\026.google.protobuf.Empty\"\000\022" +
-      "P\n\023AddNewColumnToTable\022\037.rpc.AddNewColum" +
-      "nToTableRequest\032\026.google.protobuf.Empty\"" +
-      "\000B$\n\021com.scalar.db.rpcB\rScalarDbProtoP\001b" +
-      "\006proto3"
+      "(\t:\0028\001*a\n\013Consistency\022\032\n\026CONSISTENCY_SEQ" +
+      "UENTIAL\020\000\022\030\n\024CONSISTENCY_EVENTUAL\020\001\022\034\n\030C" +
+      "ONSISTENCY_LINEARIZABLE\020\002*&\n\005Order\022\r\n\tOR" +
+      "DER_ASC\020\000\022\016\n\nORDER_DESC\020\001*\235\001\n\010DataType\022\025" +
+      "\n\021DATA_TYPE_BOOLEAN\020\000\022\021\n\rDATA_TYPE_INT\020\001" +
+      "\022\024\n\020DATA_TYPE_BIGINT\020\002\022\023\n\017DATA_TYPE_FLOA" +
+      "T\020\003\022\024\n\020DATA_TYPE_DOUBLE\020\004\022\022\n\016DATA_TYPE_T" +
+      "EXT\020\005\022\022\n\016DATA_TYPE_BLOB\020\006*q\n\020Transaction" +
+      "State\022\037\n\033TRANSACTION_STATE_COMMITTED\020\000\022\035" +
+      "\n\031TRANSACTION_STATE_ABORTED\020\001\022\035\n\031TRANSAC" +
+      "TION_STATE_UNKNOWN\020\0022\253\001\n\022DistributedStor" +
+      "age\022*\n\003Get\022\017.rpc.GetRequest\032\020.rpc.GetRes" +
+      "ponse\"\000\0221\n\004Scan\022\020.rpc.ScanRequest\032\021.rpc." +
+      "ScanResponse\"\000(\0010\001\0226\n\006Mutate\022\022.rpc.Mutat" +
+      "eRequest\032\026.google.protobuf.Empty\"\0002\341\007\n\027D" +
+      "istributedStorageAdmin\022H\n\017CreateNamespac" +
+      "e\022\033.rpc.CreateNamespaceRequest\032\026.google." +
+      "protobuf.Empty\"\000\022D\n\rDropNamespace\022\031.rpc." +
+      "DropNamespaceRequest\032\026.google.protobuf.E" +
+      "mpty\"\000\022@\n\013CreateTable\022\027.rpc.CreateTableR" +
+      "equest\032\026.google.protobuf.Empty\"\000\022<\n\tDrop" +
+      "Table\022\025.rpc.DropTableRequest\032\026.google.pr" +
+      "otobuf.Empty\"\000\022D\n\rTruncateTable\022\031.rpc.Tr" +
+      "uncateTableRequest\032\026.google.protobuf.Emp" +
+      "ty\"\000\022@\n\013CreateIndex\022\027.rpc.CreateIndexReq" +
+      "uest\032\026.google.protobuf.Empty\"\000\022<\n\tDropIn" +
+      "dex\022\025.rpc.DropIndexRequest\032\026.google.prot" +
+      "obuf.Empty\"\000\022Q\n\020GetTableMetadata\022\034.rpc.G" +
+      "etTableMetadataRequest\032\035.rpc.GetTableMet" +
+      "adataResponse\"\000\022c\n\026GetNamespaceTableName" +
+      "s\022\".rpc.GetNamespaceTableNamesRequest\032#." +
+      "rpc.GetNamespaceTableNamesResponse\"\000\022N\n\017" +
+      "NamespaceExists\022\033.rpc.NamespaceExistsReq" +
+      "uest\032\034.rpc.NamespaceExistsResponse\"\000\022@\n\013" +
+      "RepairTable\022\027.rpc.RepairTableRequest\032\026.g" +
+      "oogle.protobuf.Empty\"\000\022P\n\023AddNewColumnTo" +
+      "Table\022\037.rpc.AddNewColumnToTableRequest\032\026" +
+      ".google.protobuf.Empty\"\000\022T\n\021GetNamespace" +
+      "Names\022\035.rpc.GetNamespaceNamesRequest\032\036.r" +
+      "pc.GetNamespaceNamesResponse\"\0002\236\002\n\026Distr" +
+      "ibutedTransaction\022F\n\013Transaction\022\027.rpc.T" +
+      "ransactionRequest\032\030.rpc.TransactionRespo" +
+      "nse\"\000(\0010\001\022O\n\010GetState\022\037.rpc.GetTransacti" +
+      "onStateRequest\032 .rpc.GetTransactionState" +
+      "Response\"\000\0229\n\010Rollback\022\024.rpc.RollbackReq" +
+      "uest\032\025.rpc.RollbackResponse\"\000\0220\n\005Abort\022\021" +
+      ".rpc.AbortRequest\032\022.rpc.AbortResponse\"\0002" +
+      "\220\002\n\031TwoPhaseCommitTransaction\022p\n\031TwoPhas" +
+      "eCommitTransaction\022%.rpc.TwoPhaseCommitT" +
+      "ransactionRequest\032&.rpc.TwoPhaseCommitTr" +
+      "ansactionResponse\"\000(\0010\001\022O\n\010GetState\022\037.rp" +
+      "c.GetTransactionStateRequest\032 .rpc.GetTr" +
+      "ansactionStateResponse\"\000\0220\n\005Abort\022\021.rpc." +
+      "AbortRequest\032\022.rpc.AbortResponse\"\0002\262\013\n\033D" +
+      "istributedTransactionAdmin\022H\n\017CreateName" +
+      "space\022\033.rpc.CreateNamespaceRequest\032\026.goo" +
+      "gle.protobuf.Empty\"\000\022D\n\rDropNamespace\022\031." +
+      "rpc.DropNamespaceRequest\032\026.google.protob" +
+      "uf.Empty\"\000\022@\n\013CreateTable\022\027.rpc.CreateTa" +
+      "bleRequest\032\026.google.protobuf.Empty\"\000\022<\n\t" +
+      "DropTable\022\025.rpc.DropTableRequest\032\026.googl" +
+      "e.protobuf.Empty\"\000\022D\n\rTruncateTable\022\031.rp" +
+      "c.TruncateTableRequest\032\026.google.protobuf" +
+      ".Empty\"\000\022@\n\013CreateIndex\022\027.rpc.CreateInde" +
+      "xRequest\032\026.google.protobuf.Empty\"\000\022<\n\tDr" +
+      "opIndex\022\025.rpc.DropIndexRequest\032\026.google." +
+      "protobuf.Empty\"\000\022Q\n\020GetTableMetadata\022\034.r" +
+      "pc.GetTableMetadataRequest\032\035.rpc.GetTabl" +
+      "eMetadataResponse\"\000\022c\n\026GetNamespaceTable" +
+      "Names\022\".rpc.GetNamespaceTableNamesReques" +
+      "t\032#.rpc.GetNamespaceTableNamesResponse\"\000" +
+      "\022N\n\017NamespaceExists\022\033.rpc.NamespaceExist" +
+      "sRequest\032\034.rpc.NamespaceExistsResponse\"\000" +
+      "\022X\n\027CreateCoordinatorTables\022#.rpc.Create" +
+      "CoordinatorTablesRequest\032\026.google.protob" +
+      "uf.Empty\"\000\022T\n\025DropCoordinatorTables\022!.rp" +
+      "c.DropCoordinatorTablesRequest\032\026.google." +
+      "protobuf.Empty\"\000\022\\\n\031TruncateCoordinatorT" +
+      "ables\022%.rpc.TruncateCoordinatorTablesReq" +
+      "uest\032\026.google.protobuf.Empty\"\000\022c\n\026Coordi" +
+      "natorTablesExist\022\".rpc.CoordinatorTables" +
+      "ExistRequest\032#.rpc.CoordinatorTablesExis" +
+      "tResponse\"\000\022@\n\013RepairTable\022\027.rpc.RepairT" +
+      "ableRequest\032\026.google.protobuf.Empty\"\000\022X\n" +
+      "\027RepairCoordinatorTables\022#.rpc.RepairCoo" +
+      "rdinatorTablesRequest\032\026.google.protobuf." +
+      "Empty\"\000\022P\n\023AddNewColumnToTable\022\037.rpc.Add" +
+      "NewColumnToTableRequest\032\026.google.protobu" +
+      "f.Empty\"\000\022T\n\021GetNamespaceNames\022\035.rpc.Get" +
+      "NamespaceNamesRequest\032\036.rpc.GetNamespace" +
+      "NamesResponse\"\000B$\n\021com.scalar.db.rpcB\rSc" +
+      "alarDbProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -974,8 +990,20 @@ public final class ScalarDbProto {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_AddNewColumnToTableRequest_descriptor,
         new java.lang.String[] { "Namespace", "Table", "ColumnName", "ColumnType", });
-    internal_static_rpc_TransactionRequest_descriptor =
+    internal_static_rpc_GetNamespaceNamesRequest_descriptor =
       getDescriptor().getMessageTypes().get(31);
+    internal_static_rpc_GetNamespaceNamesRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpc_GetNamespaceNamesRequest_descriptor,
+        new java.lang.String[] { });
+    internal_static_rpc_GetNamespaceNamesResponse_descriptor =
+      getDescriptor().getMessageTypes().get(32);
+    internal_static_rpc_GetNamespaceNamesResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_rpc_GetNamespaceNamesResponse_descriptor,
+        new java.lang.String[] { "NamespaceNames", });
+    internal_static_rpc_TransactionRequest_descriptor =
+      getDescriptor().getMessageTypes().get(33);
     internal_static_rpc_TransactionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_TransactionRequest_descriptor,
@@ -1029,7 +1057,7 @@ public final class ScalarDbProto {
         internal_static_rpc_TransactionRequest_AbortRequest_descriptor,
         new java.lang.String[] { });
     internal_static_rpc_TransactionResponse_descriptor =
-      getDescriptor().getMessageTypes().get(32);
+      getDescriptor().getMessageTypes().get(34);
     internal_static_rpc_TransactionResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_TransactionResponse_descriptor,
@@ -1065,43 +1093,43 @@ public final class ScalarDbProto {
         internal_static_rpc_TransactionResponse_Error_descriptor,
         new java.lang.String[] { "ErrorCode", "Message", });
     internal_static_rpc_GetTransactionStateRequest_descriptor =
-      getDescriptor().getMessageTypes().get(33);
+      getDescriptor().getMessageTypes().get(35);
     internal_static_rpc_GetTransactionStateRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_GetTransactionStateRequest_descriptor,
         new java.lang.String[] { "TransactionId", });
     internal_static_rpc_GetTransactionStateResponse_descriptor =
-      getDescriptor().getMessageTypes().get(34);
+      getDescriptor().getMessageTypes().get(36);
     internal_static_rpc_GetTransactionStateResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_GetTransactionStateResponse_descriptor,
         new java.lang.String[] { "State", });
     internal_static_rpc_RollbackRequest_descriptor =
-      getDescriptor().getMessageTypes().get(35);
+      getDescriptor().getMessageTypes().get(37);
     internal_static_rpc_RollbackRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_RollbackRequest_descriptor,
         new java.lang.String[] { "TransactionId", });
     internal_static_rpc_RollbackResponse_descriptor =
-      getDescriptor().getMessageTypes().get(36);
+      getDescriptor().getMessageTypes().get(38);
     internal_static_rpc_RollbackResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_RollbackResponse_descriptor,
         new java.lang.String[] { "State", });
     internal_static_rpc_AbortRequest_descriptor =
-      getDescriptor().getMessageTypes().get(37);
+      getDescriptor().getMessageTypes().get(39);
     internal_static_rpc_AbortRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_AbortRequest_descriptor,
         new java.lang.String[] { "TransactionId", });
     internal_static_rpc_AbortResponse_descriptor =
-      getDescriptor().getMessageTypes().get(38);
+      getDescriptor().getMessageTypes().get(40);
     internal_static_rpc_AbortResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_AbortResponse_descriptor,
         new java.lang.String[] { "State", });
     internal_static_rpc_TwoPhaseCommitTransactionRequest_descriptor =
-      getDescriptor().getMessageTypes().get(39);
+      getDescriptor().getMessageTypes().get(41);
     internal_static_rpc_TwoPhaseCommitTransactionRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_TwoPhaseCommitTransactionRequest_descriptor,
@@ -1161,7 +1189,7 @@ public final class ScalarDbProto {
         internal_static_rpc_TwoPhaseCommitTransactionRequest_RollbackRequest_descriptor,
         new java.lang.String[] { });
     internal_static_rpc_TwoPhaseCommitTransactionResponse_descriptor =
-      getDescriptor().getMessageTypes().get(40);
+      getDescriptor().getMessageTypes().get(42);
     internal_static_rpc_TwoPhaseCommitTransactionResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_TwoPhaseCommitTransactionResponse_descriptor,
@@ -1191,7 +1219,7 @@ public final class ScalarDbProto {
         internal_static_rpc_TwoPhaseCommitTransactionResponse_Error_descriptor,
         new java.lang.String[] { "ErrorCode", "Message", });
     internal_static_rpc_CreateCoordinatorTablesRequest_descriptor =
-      getDescriptor().getMessageTypes().get(41);
+      getDescriptor().getMessageTypes().get(43);
     internal_static_rpc_CreateCoordinatorTablesRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_CreateCoordinatorTablesRequest_descriptor,
@@ -1203,31 +1231,31 @@ public final class ScalarDbProto {
         internal_static_rpc_CreateCoordinatorTablesRequest_OptionsEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_rpc_DropCoordinatorTablesRequest_descriptor =
-      getDescriptor().getMessageTypes().get(42);
+      getDescriptor().getMessageTypes().get(44);
     internal_static_rpc_DropCoordinatorTablesRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_DropCoordinatorTablesRequest_descriptor,
         new java.lang.String[] { "IfExist", });
     internal_static_rpc_TruncateCoordinatorTablesRequest_descriptor =
-      getDescriptor().getMessageTypes().get(43);
+      getDescriptor().getMessageTypes().get(45);
     internal_static_rpc_TruncateCoordinatorTablesRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_TruncateCoordinatorTablesRequest_descriptor,
         new java.lang.String[] { });
     internal_static_rpc_CoordinatorTablesExistRequest_descriptor =
-      getDescriptor().getMessageTypes().get(44);
+      getDescriptor().getMessageTypes().get(46);
     internal_static_rpc_CoordinatorTablesExistRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_CoordinatorTablesExistRequest_descriptor,
         new java.lang.String[] { });
     internal_static_rpc_CoordinatorTablesExistResponse_descriptor =
-      getDescriptor().getMessageTypes().get(45);
+      getDescriptor().getMessageTypes().get(47);
     internal_static_rpc_CoordinatorTablesExistResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_CoordinatorTablesExistResponse_descriptor,
         new java.lang.String[] { "Exist", });
     internal_static_rpc_RepairCoordinatorTablesRequest_descriptor =
-      getDescriptor().getMessageTypes().get(46);
+      getDescriptor().getMessageTypes().get(48);
     internal_static_rpc_RepairCoordinatorTablesRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_rpc_RepairCoordinatorTablesRequest_descriptor,

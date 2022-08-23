@@ -2,6 +2,7 @@ package com.scalar.db.storage.multistorage;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
+import com.scalar.db.api.Admin;
 import com.scalar.db.api.DistributedStorageAdmin;
 import com.scalar.db.api.TableMetadata;
 import com.scalar.db.config.DatabaseConfig;
@@ -10,9 +11,11 @@ import com.scalar.db.io.DataType;
 import com.scalar.db.service.StorageFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.concurrent.ThreadSafe;
 
 /**
@@ -180,6 +183,16 @@ public class MultiStorageAdmin implements DistributedStorageAdmin {
       String namespace, String table, String columnName, DataType columnType)
       throws ExecutionException {
     getAdmin(namespace, table).addNewColumnToTable(namespace, table, columnName, columnType);
+  }
+
+  @Override
+  public Set<String> getNamespaceNames() throws ExecutionException {
+    Set<String> namespaceNames = new HashSet<>();
+    for (DistributedStorageAdmin admin : admins) {
+      namespaceNames.addAll(admin.getNamespaceNames());
+    }
+
+    return namespaceNames;
   }
 
   private DistributedStorageAdmin getAdmin(String namespace) {

@@ -41,4 +41,32 @@ public class ConsensusCommitAdminIntegrationTestWithDynamo
   @Test
   @Override
   public void dropNamespace_ForNonExistingNamespace_ShouldExecutionException() {}
+
+  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+  @Test
+  @Override
+  public void dropNamespace_ForNonExistingNamespace_ShouldDropNamespaceProperly() {}
+
+  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+  @Test
+  @Override
+  public void getNamespaceNames_ShouldReturnCreatedNamespaces() {}
+
+  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+  @Test
+  @Override
+  public void
+  getNamespaceNames_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
+
+  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+  @Test
+  @Override
+  public void
+  createNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
+
+  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+  @Test
+  @Override
+  public void
+  dropNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
 }
