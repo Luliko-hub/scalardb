@@ -627,43 +627,6 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
     assertThat(namespaces).containsOnly(namespace1, namespace2);
   }
 
-  @Test
-  public void
-      createNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
-          throws Exception {
-    try {
-      // Arrange
-      adminTestUtils.dropNamespaceTable();
-
-      // Act
-      admin.createNamespace(namespace3);
-
-      // Assert
-      assertThat(admin.namespaceExists(namespace3)).isTrue();
-    } finally {
-      admin.dropNamespace(namespace3, true);
-    }
-  }
-
-  @Test
-  public void
-      dropNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
-          throws Exception {
-    try {
-      // Arrange
-      admin.createNamespace(namespace3);
-      adminTestUtils.dropNamespaceTable();
-
-      // Act
-      admin.dropNamespace(namespace3);
-
-      // Assert
-      assertThat(admin.namespaceExists(namespace3)).isFalse();
-    } finally {
-      admin.dropNamespace(namespace3, true);
-    }
-  }
-
   protected boolean isIndexOnBooleanColumnSupported() {
     return true;
   }

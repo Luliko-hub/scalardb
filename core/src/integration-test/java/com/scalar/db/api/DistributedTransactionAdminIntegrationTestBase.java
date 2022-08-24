@@ -1,6 +1,5 @@
 package com.scalar.db.api;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -75,13 +74,15 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
   private String namespace1;
   private String namespace2;
   private String namespace3;
+  protected Properties clientProperties;
 
   @BeforeAll
   public void beforeAll() throws Exception {
     initialize();
-    transactionFactory = TransactionFactory.create(TestUtils.addSuffix(gerProperties(), TEST_NAME));
+    clientProperties = TestUtils.addSuffix(gerProperties(), TEST_NAME);
+    transactionFactory = TransactionFactory.create(clientProperties);
     admin = transactionFactory.getTransactionAdmin();
-    adminTestUtils = AdminTestUtils.create(TestUtils.addSuffix(gerProperties(), TEST_NAME));
+    adminTestUtils = AdminTestUtils.create(getStorageProperties());
     namespace1 = getNamespace1();
     namespace2 = getNamespace2();
     namespace3 = getNamespace3();
@@ -91,7 +92,9 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
   protected void initialize() throws Exception {}
 
   protected abstract Properties gerProperties();
-
+  protected Properties getStorageProperties() {
+    return TestUtils.addSuffix(gerProperties(), TEST_NAME);
+  }
   protected String getNamespace1() {
     return NAMESPACE1;
   }
@@ -103,6 +106,8 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
   protected String getNamespace3() {
     return NAMESPACE3;
   }
+
+  protected abstract String getCoordinatorNamespace();
 
   private void createTables() throws ExecutionException {
     Map<String, String> options = getCreationOptions();
@@ -220,7 +225,12 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
 
       // Assert
       assertThat(admin.namespaceExists(namespace3)).isTrue();
-      assertThat(admin.getNamespaceNames()).containsOnly(namespace1, namespace2, namespace3);
+      if (hasCoordinatorTables()) {
+        assertThat(admin.getNamespaceNames())
+            .containsOnly(namespace1, namespace2, namespace3, getCoordinatorNamespace());
+      } else {
+        assertThat(admin.getNamespaceNames()).containsOnly(namespace1, namespace2, namespace3);
+      }
     } finally {
       admin.dropNamespace(namespace3, true);
     }
@@ -255,7 +265,12 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
 
       // Assert
       assertThat(admin.namespaceExists(namespace3)).isFalse();
-      assertThat(admin.getNamespaceNames()).containsOnly(namespace1, namespace2);
+      if (hasCoordinatorTables()) {
+        assertThat(admin.getNamespaceNames())
+            .containsOnly(namespace1, namespace2, getCoordinatorNamespace());
+      } else {
+        assertThat(admin.getNamespaceNames()).containsOnly(namespace1, namespace2);
+      }
     } finally {
       admin.dropNamespace(namespace3, true);
     }
@@ -625,13 +640,17 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
     Set<String> namespaces = admin.getNamespaceNames();
 
     // Assert
-    assertThat(namespaces).containsOnly(namespace1, namespace2);
+    if (hasCoordinatorTables()) {
+      assertThat(namespaces).containsOnly(namespace1, namespace2, getCoordinatorNamespace());
+    } else {
+      assertThat(namespaces).containsOnly(namespace1, namespace2);
+    }
   }
 
   @Test
   public void
-  getNamespaceNames_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
-      throws Exception {
+      getNamespaceNames_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
+          throws Exception {
     // Arrange
     adminTestUtils.dropNamespaceTable();
 
@@ -639,47 +658,20 @@ public abstract class DistributedTransactionAdminIntegrationTestBase {
     Set<String> namespaces = admin.getNamespaceNames();
 
     // Assert
-    assertThat(namespaces).containsOnly(namespace1, namespace2);
-  }
-
-  @Test
-  public void
-  createNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
-      throws Exception {
-    try {
-      // Arrange
-      adminTestUtils.dropNamespaceTable();
-
-      // Act
-      admin.createNamespace(namespace3);
-
-      // Assert
-      assertThat(admin.namespaceExists(namespace3)).isTrue();
-    } finally {
-      admin.dropNamespace(namespace3, true);
+    if (hasCoordinatorTables()) {
+      assertThat(namespaces).containsOnly(namespace1, namespace2, getCoordinatorNamespace());
+    } else {
+      assertThat(namespaces).containsOnly(namespace1, namespace2);
     }
   }
 
-  @Test
-  public void
-  dropNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly()
-      throws Exception {
-    try {
-      // Arrange
-      admin.createNamespace(namespace3);
-      adminTestUtils.dropNamespaceTable();
 
-      // Act
-      admin.dropNamespace(namespace3);
-
-      // Assert
-      assertThat(admin.namespaceExists(namespace3)).isFalse();
-    } finally {
-      admin.dropNamespace(namespace3, true);
-    }
-  }
 
   protected boolean isIndexOnBooleanColumnSupported() {
+    return true;
+  }
+
+  protected boolean hasCoordinatorTables() {
     return true;
   }
 }

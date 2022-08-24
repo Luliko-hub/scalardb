@@ -1,7 +1,10 @@
 package com.scalar.db.server;
 
 import com.scalar.db.api.DistributedTransactionAdminIntegrationTestBase;
+import com.scalar.db.config.DatabaseConfig;
 import com.scalar.db.exception.storage.ExecutionException;
+import com.scalar.db.transaction.consensuscommit.ConsensusCommitConfig;
+import com.scalar.db.transaction.consensuscommit.Coordinator;
 import java.io.IOException;
 import java.util.Properties;
 import org.junit.jupiter.api.AfterAll;
@@ -23,6 +26,18 @@ public class DistributedTransactionAdminServiceIntegrationTest
   @Override
   protected Properties gerProperties() {
     return ServerEnv.getProperties();
+  }
+
+  @Override
+  protected Properties getStorageProperties() {
+    return ServerEnv.getServerConfig().getProperties();
+  }
+
+  @Override
+  protected String getCoordinatorNamespace() {
+    return new ConsensusCommitConfig(new DatabaseConfig(getStorageProperties()))
+        .getCoordinatorNamespace()
+        .orElse(Coordinator.NAMESPACE);
   }
 
   @AfterAll

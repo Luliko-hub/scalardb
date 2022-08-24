@@ -16,4 +16,11 @@ public abstract class ConsensusCommitAdminIntegrationTestBase
   }
 
   protected abstract Properties getProps();
+
+  @Override
+  protected String getCoordinatorNamespace() {
+    return new ConsensusCommitConfig(new DatabaseConfig(getStorageProperties()))
+        .getCoordinatorNamespace()
+        .orElse(Coordinator.NAMESPACE);
+  }
 }

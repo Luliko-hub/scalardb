@@ -1,6 +1,5 @@
 package com.scalar.db.storage.cosmos;
 
-import com.scalar.db.exception.storage.ExecutionException;
 import com.scalar.db.transaction.consensuscommit.ConsensusCommitAdminIntegrationTestBase;
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +30,11 @@ public class ConsensusCommitAdminIntegrationTestWithCosmos
     return getNamespace(super.getNamespace3());
   }
 
+  @Override
+  protected String getCoordinatorNamespace() {
+    return getNamespace(super.getCoordinatorNamespace());
+  }
+
   private String getNamespace(String namespace) {
     Optional<String> databasePrefix = CosmosEnv.getDatabasePrefix();
     return databasePrefix.map(prefix -> prefix + namespace).orElse(namespace);
@@ -40,36 +44,37 @@ public class ConsensusCommitAdminIntegrationTestWithCosmos
   protected Map<String, String> getCreationOptions() {
     return CosmosEnv.getCreationOptions();
   }
-  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
-  @Test
-  @Override
-  public void createNamespace_ForNonExistingNamespace_ShouldCreateNamespaceProperly() {}
 
-  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
-  @Test
-  @Override
-  public void dropNamespace_ForNonExistingNamespace_ShouldDropNamespaceProperly() {}
-
-  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
-  @Test
-  @Override
-  public void getNamespaceNames_ShouldReturnCreatedNamespaces() {}
-
-  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
-  @Test
-  @Override
-  public void
-  getNamespaceNames_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
-
-  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
-  @Test
-  @Override
-  public void
-  createNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
-
-  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
-  @Test
-  @Override
-  public void
-  dropNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
+//  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+//  @Test
+//  @Override
+//  public void createNamespace_ForNonExistingNamespace_ShouldCreateNamespaceProperly() {}
+//
+//  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+//  @Test
+//  @Override
+//  public void dropNamespace_ForNonExistingNamespace_ShouldDropNamespaceProperly() {}
+//
+//  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+//  @Test
+//  @Override
+//  public void getNamespaceNames_ShouldReturnCreatedNamespaces() {}
+//
+//  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+//  @Test
+//  @Override
+//  public void
+//      getNamespaceNames_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
+//
+//  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+//  @Test
+//  @Override
+//  public void
+//      createNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
+//
+//  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
+//  @Test
+//  @Override
+//  public void
+//      dropNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
 }
