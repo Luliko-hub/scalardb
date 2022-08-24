@@ -68,11 +68,11 @@ public class MultiStorageAdmin implements DistributedStorageAdmin {
   MultiStorageAdmin(
       Map<String, DistributedStorageAdmin> tableAdminMap,
       Map<String, DistributedStorageAdmin> namespaceAdminMap,
-      DistributedStorageAdmin defaultAdmin) {
+      DistributedStorageAdmin defaultAdmin, List<DistributedStorageAdmin> admins) {
     this.tableAdminMap = tableAdminMap;
     this.namespaceAdminMap = namespaceAdminMap;
     this.defaultAdmin = defaultAdmin;
-    admins = null;
+    this.admins = admins;
   }
 
   @Override

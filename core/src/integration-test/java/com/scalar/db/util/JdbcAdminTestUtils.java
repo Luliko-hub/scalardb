@@ -33,14 +33,6 @@ public class JdbcAdminTestUtils extends AdminTestUtils {
   @Override
   public void dropMetadataTable() throws SQLException {
     execute("DROP TABLE " + enclosedFullTableName(metadataNamespace, metadataTable, rdbEngine));
-
-    String dropNamespaceStatement;
-    if (rdbEngine == RdbEngine.ORACLE) {
-      dropNamespaceStatement = "DROP USER " + QueryUtils.enclose(metadataNamespace, rdbEngine);
-    } else {
-      dropNamespaceStatement = "DROP SCHEMA " + QueryUtils.enclose(metadataNamespace, rdbEngine);
-    }
-    execute(dropNamespaceStatement);
   }
 
   @Override

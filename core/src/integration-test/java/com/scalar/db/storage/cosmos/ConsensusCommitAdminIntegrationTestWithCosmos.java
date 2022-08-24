@@ -30,10 +30,7 @@ public class ConsensusCommitAdminIntegrationTestWithCosmos
     return getNamespace(super.getNamespace3());
   }
 
-  @Override
-  protected String getCoordinatorNamespace() {
-    return getNamespace(super.getCoordinatorNamespace());
-  }
+
 
   private String getNamespace(String namespace) {
     Optional<String> databasePrefix = CosmosEnv.getDatabasePrefix();
@@ -65,16 +62,5 @@ public class ConsensusCommitAdminIntegrationTestWithCosmos
 //  @Override
 //  public void
 //      getNamespaceNames_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
-//
-//  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
-//  @Test
-//  @Override
-//  public void
-//      createNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
-//
-//  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
-//  @Test
-//  @Override
-//  public void
-//      dropNamespace_ForBackwardCompatibilityWhenNamespaceTableDoesNotExist_ShouldWorkProperly() {}
+
 }

@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.protobuf.LazyStringArrayList;
+import com.google.protobuf.ProtocolStringList;
 import com.scalar.db.api.Scan;
 import com.scalar.db.api.TableMetadata;
 import com.scalar.db.exception.storage.ExecutionException;
@@ -22,6 +23,8 @@ import com.scalar.db.rpc.DistributedStorageAdminGrpc;
 import com.scalar.db.rpc.DropIndexRequest;
 import com.scalar.db.rpc.DropNamespaceRequest;
 import com.scalar.db.rpc.DropTableRequest;
+import com.scalar.db.rpc.GetNamespaceNamesRequest;
+import com.scalar.db.rpc.GetNamespaceNamesResponse;
 import com.scalar.db.rpc.GetNamespaceTableNamesRequest;
 import com.scalar.db.rpc.GetNamespaceTableNamesResponse;
 import com.scalar.db.rpc.GetTableMetadataRequest;
@@ -330,5 +333,24 @@ public class GrpcAdminTest {
                 .setColumnName(columnName)
                 .setColumnType(com.scalar.db.rpc.DataType.DATA_TYPE_TEXT)
                 .build());
+  }
+
+  @Test
+  public void getNamespaceNames_StubShouldBeCalledProperly() throws ExecutionException {
+    // Arrange
+
+    LazyStringArrayList namespaceNames = new LazyStringArrayList();
+    namespaceNames.add("n1");
+    namespaceNames.add("n2");
+    GetNamespaceNamesResponse response = mock(GetNamespaceNamesResponse.class);
+    when(response.getNamespaceNamesList()).thenReturn(namespaceNames);
+    when(stub.getNamespaceNames(any())).thenReturn(response);
+
+    // Act
+    Set<String> actualNamespaces = admin.getNamespaceNames();
+
+    // Assert
+    verify(stub).getNamespaceNames(GetNamespaceNamesRequest.newBuilder().build());
+    assertThat(actualNamespaces).containsOnly("n1", "n2");
   }
 }
