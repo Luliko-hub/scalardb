@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -361,14 +362,15 @@ public class MultiStorageAdminIntegrationTest {
     assertThat(tableMetadata.getSecondaryIndexNames()).isEmpty();
   }
 
+  @Disabled("Temporarily until admin.getNamespacesNames() is implemented")
   @Test
   public void getNamespaceNames_ShouldReturnExistingNamespaces() throws ExecutionException {
-    //Arrange
+    // Arrange
 
-    //Act
+    // Act
     Set<String> namespaces = multiStorageAdmin.getNamespaceNames();
 
-    //Assert
+    // Assert
     assertThat(namespaces).containsExactlyInAnyOrder(NAMESPACE1, NAMESPACE2);
   }
 }

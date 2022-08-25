@@ -79,7 +79,7 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
     initialize();
     storageFactory = StorageFactory.create(TestUtils.addSuffix(getProperties(), TEST_NAME));
     admin = storageFactory.getAdmin();
-    adminTestUtils = AdminTestUtils.create(TestUtils.addSuffix(getProperties(), TEST_NAME));
+    adminTestUtils = AdminTestUtils.create(getStorageProperties());
     namespace1 = getNamespace1();
     namespace2 = getNamespace2();
     namespace3 = getNamespace3();
@@ -89,6 +89,9 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
   protected void initialize() throws Exception {}
 
   protected abstract Properties getProperties();
+  protected Properties getStorageProperties() {
+    return TestUtils.addSuffix(getProperties(), TEST_NAME);
+  }
 
   protected String getNamespace1() {
     return NAMESPACE1;
