@@ -161,6 +161,20 @@ public abstract class DistributedStorageAdminIntegrationTestBase {
     assertThat(tableMetadata.getColumnNames().contains(COL_NAME10)).isTrue();
     assertThat(tableMetadata.getColumnNames().contains(COL_NAME11)).isTrue();
 
+    Iterator<String> columnNamesIterator = tableMetadata.getColumnNames().iterator();
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME1);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME2);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME3);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME4);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME5);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME6);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME7);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME8);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME9);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME10);
+    assertThat(columnNamesIterator.next()).isEqualTo(COL_NAME11);
+    assertThat(columnNamesIterator.hasNext()).isFalse();
+
     assertThat(tableMetadata.getColumnDataType(COL_NAME1)).isEqualTo(DataType.INT);
     assertThat(tableMetadata.getColumnDataType(COL_NAME2)).isEqualTo(DataType.TEXT);
     assertThat(tableMetadata.getColumnDataType(COL_NAME3)).isEqualTo(DataType.TEXT);
