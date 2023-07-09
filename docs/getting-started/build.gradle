@@ -6,11 +6,12 @@ repositories {
     mavenCentral()
 }
 
-mainClassName = "sample.ElectronicMoneyMain"
+mainClassName = "healthdata.HealthDataMain"
 
 dependencies {
     implementation 'com.scalar-labs:scalardb:3.9.0'
     implementation 'org.slf4j:slf4j-simple:1.7.30'
+
 }
 
 sourceCompatibility = 1.8 

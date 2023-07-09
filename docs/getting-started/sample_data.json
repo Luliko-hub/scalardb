@@ -1,0 +1,51 @@
+{
+  "customer.customers": {
+    "trainsaction": true,
+    "partition-key":[
+      "customer-id"
+    ],
+    "columns":{
+      "customer-id": "TEXT",
+      "name": "TEXT",
+      "address": "TEXT",
+      "birthdate": "TEXT",
+      "height": "FLOAT"
+    }
+  },
+  "customer.body-composition-meter":{
+    "trainsaction": true,
+    "partition-key":[
+      "customer-id"
+    ],
+    "clustering-key":[
+      "timestamp"
+    ],
+    "columns":{
+      "customer-id": "TEXT",
+      "timestamp": "TEXT",
+      "weight": "FLOAT",
+      "mucsle-mass": "FLOAT",
+      "body-fat-percentage": "FLOAT"
+    }
+  },
+  "customer.wearable-watch":{
+    "trainsaction": true,
+    "partition-key":[
+      "customer-id"
+    ],
+    "clustering-key":[
+      "timestamp"
+    ],
+    "columns":{
+      "customer-id": "TEXT",
+      "timestamp": "TEXT",
+      "heart-rate": "FLOAT",
+      "number-of-steps": "FLOAT"
+    }
+    
+
+  }
+
+  
+
+}
