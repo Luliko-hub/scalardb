@@ -12,21 +12,24 @@ The configuration for Two-phase Commit Transactions is the same as the one for t
 For example, you can set the following configuration when you use Cassandra:
 
 ```properties
-# Comma separated contact points
+# Consensus commit is required to use Two-phase Commit Transactions.
+scalar.db.transaction_manager=consensus-commit
+
+# Storage implementation.
+scalar.db.storage=cassandra
+
+# Comma-separated contact points.
 scalar.db.contact_points=cassandra
 
-# Port number for all the contact points. Default port number for each database is used if empty.
+# Port number for all the contact points.
 scalar.db.contact_port=9042
 
-# Credential information to access the database
+# Credential information to access the database.
 scalar.db.username=cassandra
 scalar.db.password=cassandra
-
-# Storage implementation. Either cassandra or cosmos or dynamo or jdbc can be set. Default storage is cassandra.
-scalar.db.storage=cassandra
 ```
 
-Please see [Getting Started](getting-started.md) for configurations of other databases/storages.
+For details about configurations, see [ScalarDB Configurations](configurations.md).
 
 ### ScalarDB Server
 
@@ -255,6 +258,15 @@ public class Sample {
         // ValidationConflictException or CommitConflictException, it indicates a transaction
         // conflict occurs during the transaction, so you can retry the transaction from the
         // beginning
+        try {
+          tx.rollback();
+        } catch (RollbackException ex) {
+          // Rolling back the transaction failed. You can log it here
+        }
+      } catch (UnsatisfiedConditionException e) {
+        // You need to handle UnsatisfiedConditionException only if a mutation operation specifies a condition.
+        // This exception indicates the condition for the mutation operation is not met, so you can
+        // retry the transaction once the exception cause is fixed
         try {
           tx.rollback();
         } catch (RollbackException ex) {
