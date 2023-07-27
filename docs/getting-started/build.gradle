@@ -6,7 +6,8 @@ repositories {
     mavenCentral()
 }
 
-mainClassName = "healthdata.tryImport"
+// mainClassName = "healthdata.HealthDataMain"
+mainClassName = "healthdata.GUI"
 
 dependencies {
     implementation 'com.scalar-labs:scalardb:3.9.0'
