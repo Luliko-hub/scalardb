@@ -56,13 +56,44 @@ public class HealthData {
   try {
     // "2023-07-11 23:30:30" の間の空白がコマンドラインからの入力だとダメっぽい
     loadCustomerIfNotExists(tx, "1", "TaroYamada", "Tokyo", "2000-01-12", 53.2);    
-    loadCustomerIfNotExists(tx, "2", "HanakoTanaka", "Tokyo", "2000-01-14", 53.2);    
-    loadBodyCompositionIfNotExists(tx, "1", "2023-07-11 23:30:30", 54.1, 28.0, 18.1);    
-    loadBodyCompositionIfNotExists(tx, "2", "2023-07-11 24:30:30", 54.1, 28.0, 18.1);    
+    loadCustomerIfNotExists(tx, "2", "HanakoTanaka", "Tokyo", "1996-01-14", 52.2);    
+    loadCustomerIfNotExists(tx, "3", "YukaSuzuki", "Tokyo", "2000-02-22", 52.2);    
+    loadCustomerIfNotExists(tx, "4", "HumioSato", "Tokyo", "2003-05-14", 51.2);   
+    loadBodyCompositionIfNotExists(tx, "1", "2023-07-11 23:30:30", 54.1, 28.0, 20.1);    
+    loadBodyCompositionIfNotExists(tx, "1", "2023-07-10 23:30:30", 54.3, 28.0, 21.1);  
+    loadBodyCompositionIfNotExists(tx, "1", "2023-07-09 12:30:30", 55.3, 28.0, 20.1); 
+
+    loadBodyCompositionIfNotExists(tx, "2", "2023-07-09 12:30:30", 45.3, 28.0, 14.1);  
+    loadBodyCompositionIfNotExists(tx, "2", "2023-07-08 21:30:30", 43.3, 28.0, 184.1);  
+    loadBodyCompositionIfNotExists(tx, "2", "2023-07-07 23:30:30", 44.1, 28.0, 14.1);    
+    loadBodyCompositionIfNotExists(tx, "2", "2023-07-06 23:30:30", 45.3, 28.0, 13.9);  
+    
+    loadBodyCompositionIfNotExists(tx, "3", "2023-07-12 21:30:30", 41.3, 28.2, 18.0);  
+    loadBodyCompositionIfNotExists(tx, "3", "2023-07-11 12:30:30", 44.3, 28.2, 18.1);    
+    loadBodyCompositionIfNotExists(tx, "3", "2023-07-10 23:30:30", 43.3, 28.1, 18.0);  
+    loadBodyCompositionIfNotExists(tx, "3", "2023-07-09 23:30:30", 44.1, 28.2, 18.1);    
+    loadBodyCompositionIfNotExists(tx, "3", "2023-07-08 21:30:30", 43.3, 28.1, 18.0);  
+
+    loadBodyCompositionIfNotExists(tx, "4", "2023-07-03 12:30:30", 55.3, 26.0, 19.0);
+    loadBodyCompositionIfNotExists(tx, "4", "2023-07-02 23:30:30", 54.3, 26.0, 19.2);  
+    loadBodyCompositionIfNotExists(tx, "4", "2023-07-01 23:30:30", 5.1, 26.0, 19.1);    
+
     loadWearableWatchIfNotExists(tx, "1", "2023-07-11 23:30:30", 87.2, 90);
-    loadWearableWatchIfNotExists(tx, "2", "2023-07-11 24:30:30", 87.2, 90);
+    loadWearableWatchIfNotExists(tx, "2", "2023-07-11 21:30:30", 87.2, 90);
+    loadWearableWatchIfNotExists(tx, "1", "2023-07-10 23:30:30", 87.2, 100);
+    loadWearableWatchIfNotExists(tx, "2", "2023-07-10 21:30:30", 87.2, 100);
+    loadWearableWatchIfNotExists(tx, "1", "2023-07-09 23:30:30", 87.2, 90);
+    loadWearableWatchIfNotExists(tx, "2", "2023-07-09 21:30:30", 87.2, 90);
+    loadWearableWatchIfNotExists(tx, "1", "2023-07-09 23:30:30", 87.2, 100);
+    loadWearableWatchIfNotExists(tx, "2", "2023-07-10 21:30:30", 87.2, 100);
     loadMachineUsageIfNotExists(tx, "1", "2023-07-11 23:30:30", "1", "2023-07-11 24:30:30");
-    loadMachineUsageIfNotExists(tx, "2", "2023-07-11 24:30:30", "1", "2023-07-12 24:30:30");
+    loadMachineUsageIfNotExists(tx, "2", "2023-07-11 21:30:30", "2", "2023-07-12 24:30:30");
+    loadMachineUsageIfNotExists(tx, "1", "2023-07-10 23:30:30", "2", "2023-07-10 24:30:30");
+    loadMachineUsageIfNotExists(tx, "2", "2023-07-10 21:30:30", "2", "2023-07-09 24:30:30");
+    loadMachineUsageIfNotExists(tx, "1", "2023-07-09 23:30:30", "1", "2023-07-11 24:30:30");
+    loadMachineUsageIfNotExists(tx, "2", "2023-07-09 21:30:30", "2", "2023-07-12 24:30:30");
+    loadMachineUsageIfNotExists(tx, "1", "2023-07-08 23:30:30", "2", "2023-07-10 24:30:30");
+    loadMachineUsageIfNotExists(tx, "2", "2023-07-08 21:30:30", "2", "2023-07-09 24:30:30");
 
     tx.commit();
   } catch (Exception e) {
