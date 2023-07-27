@@ -4,40 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.File;
 
-// public class checkHealthData {
-//     public static void main(String[] args) throws Exception{
-//       HealthDataSample healthDataSample;
-//       healthDataSample = new HealthDataSample();
-//       String id = "ss";
-//       String timestamp = "ss";
-
-//       Map<String, Object> body_datas = new HashMap<>();
-//       double weight = 0.0;
-//       double muscle_mass = 0.0;
-//       double body_fat_percentage = 0.0;
-//       double target_weight = 0.0;
-//       double running_time = 0.0;
-//       int number_of_steps = 0;
-
-//       body_datas = healthDataSample.getBodyData(id, timestamp);
-//       System.out.println("weight " + body_datas.get("weight"));
-//       System.out.println("mucsle_mass " + body_datas.get("mucsle_mass"));
-//       System.out.println("body_fat_percentage " + body_datas.get("body_fat_percentage"));
-//       target_weight = healthDataSample.getTargetWeight(id);
-//       System.out.println("target_weight " + target_weight);
-//       running_time = healthDataSample.getRunningTime(id, timestamp);
-//       System.out.println("running_time " + running_time);
-//       number_of_steps = healthDataSample.getNumberOfSteps(id, timestamp);
-//       System.out.println("number_of_steps " + number_of_steps);
-
-//   }
-
-// }
 
 public class HealthDataSample {
   /* 
   input
-    id: string
+    id: string  
     timestamp: string
     ex) "2019-06-30 23:10:26.947" 参考: https://magazine.techacademy.jp/magazine/22253
   output

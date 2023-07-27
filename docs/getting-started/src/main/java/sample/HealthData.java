@@ -54,7 +54,6 @@ public class HealthData {
   public void loadInitialData() throws TransactionException {
   DistributedTransaction tx = manager.start();
   try {
-    // "2023-07-11 23:30:30" の間の空白がコマンドラインからの入力だとダメっぽい
     loadCustomerIfNotExists(tx, "1", "TaroYamada", "Tokyo", "2000-01-12", 53.2);    
     loadCustomerIfNotExists(tx, "2", "HanakoTanaka", "Tokyo", "1996-01-14", 52.2);    
     loadCustomerIfNotExists(tx, "3", "YukaSuzuki", "Tokyo", "2000-02-22", 52.2);    
